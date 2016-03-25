@@ -22,7 +22,7 @@ const teardownStubs = () => {
   mocks = null;
 };
 
-before('Running setup for postgres mapper', (assert) =>  {
+before('++++++++++++ Running setup for postgres mapper ++++++++++++', (assert) =>  {
   setupStubs();
   assert.end();
 });
@@ -47,7 +47,7 @@ test('*** New postgres mapper ***', (assert) => {
   assert.end();
 });
 
-after('Cleanup after postgres mapper', (assert) => {
+after('++++++++++++ Cleanup after postgres mapper ++++++++++++', (assert) => {
   teardownStubs();
   assert.end();
 });

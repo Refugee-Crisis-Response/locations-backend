@@ -1,6 +1,6 @@
 import gulp from 'gulp';
 import tape from 'gulp-tape';
-import faucet from 'faucet';
+import tapSpec from 'tap-spec';
 
 gulp.task('test', () => {
   return gulp.src('test/**/*.test.js')
@@ -12,6 +12,6 @@ gulp.task('test', () => {
 gulp.task('test-unit', () => {
   return gulp.src('test/unit/**/*.test.js')
     .pipe(tape({
-      reporter: faucet()
+      reporter: tapSpec()
     }));
 });
