@@ -9,12 +9,17 @@ const after = test;
 
 const setupStubs = () => {
   mocks.model = {
-    list: sinon.stub()
+    list: sinon.stub(),
+    get: sinon.stub()
   };
   mocks.results = {
     rows: []
   };
-  mocks.req = {};
+  mocks.req = {
+    params: {
+      country: 'fakecountry'
+    }
+  };
   mocks.res = {
     send: sinon.spy()
   };
@@ -52,6 +57,48 @@ test('*** Listing countries ***', (assert) => {
     mocks.model.list.callsArgWith(0, error);
     let countries = new Controller(mocks.model);
     countries.list(mocks.req, mocks.res);
+    assert.equal(mocks.res.send.calledWith(500, error), true);
+    assert.end();
+  });
+
+  assert.end();
+});
+
+test('*** Getting a country ***', (assert) => {
+
+  assert.test('Correct params in call', (assert) => {
+    setupStubs();
+    let countries = new Controller(mocks.model);
+    countries.get(mocks.req, mocks.res);
+    assert.equal(mocks.model.get.calledWith(mocks.req.params.country, sinon.match.func), true);
+    assert.end();
+  });
+
+  assert.test('Country found', (assert) => {
+    setupStubs();
+    mocks.results.rows.push({});
+    mocks.model.get.callsArgWith(1, null, mocks.results);
+    let countries = new Controller(mocks.model);
+    countries.get(mocks.req, mocks.res);
+    assert.equal(mocks.res.send.calledWith(200, mocks.results.rows), true);
+    assert.end();
+  });
+
+  assert.test('No country found', (assert) => {
+    setupStubs();
+    mocks.model.get.callsArgWith(1, null, mocks.results);
+    let countries = new Controller(mocks.model);
+    countries.get(mocks.req, mocks.res);
+    assert.equal(mocks.res.send.calledWith(404, mocks.results.rows), true);
+    assert.end();
+  });
+
+  assert.test('Query throws error', (assert) => {
+    setupStubs();
+    let error = {};
+    mocks.model.get.callsArgWith(1, error);
+    let countries = new Controller(mocks.model);
+    countries.get(mocks.req, mocks.res);
     assert.equal(mocks.res.send.calledWith(500, error), true);
     assert.end();
   });

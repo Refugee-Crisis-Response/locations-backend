@@ -34,6 +34,8 @@ server.get('/', (req, res) => {
 
 server.get('/countries', controllers.countries.list);
 
+server.get('/countries/:country', controllers.countries.get);
+
 server.listen(3000, () => {
   console.log('now listening at %s', server.url);
 });
