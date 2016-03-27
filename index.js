@@ -3,7 +3,10 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import Postgres from './lib/mappers/Postgres';
 import Country from './lib/models/Country';
+import City from './lib/models/City';
+import CountryCity from './lib/models/Country-City';
 import Countries from './lib/controllers/Countries';
+import Cities from './lib/controllers/Cities';
 
 //load environment vars if .env file is there
 try {
@@ -25,7 +28,8 @@ server.pre(restify.pre.sanitizePath());
 
 let Pg = new Postgres(process.env.DB_CONNECT);
 let controllers = {
-  countries: new Countries(new Country(Pg))
+  countries: new Countries(new Country(Pg)),
+  cities: new Cities(new City(Pg), new CountryCity(Pg))
 };
 
 server.get('/', (req, res) => {
@@ -37,6 +41,8 @@ server.get('/', (req, res) => {
 server.get('/countries/', controllers.countries.list);
 
 server.get('/countries/:country', controllers.countries.get);
+
+server.get('/countries/:country/cities', controllers.cities.list);
 
 server.listen(3000, () => {
   console.log('now listening at %s', server.url);
