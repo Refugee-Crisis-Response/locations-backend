@@ -1,6 +1,7 @@
 {
   "city": {
-    "list": "select id, data ->> 'name' as name_en, lat, lng from cities where country_id = $1"
+    "list": "select id, data ->> 'name' as name_en, lat, lng from cities where country_id = $1",
+    "bounds": "SELECT id, data ->> 'name' as name, lat, lng FROM   cities WHERE  cities.geo @ ST_MakeEnvelope ($1, $2, $3, $4);"
   },
   "countrycity": {
     "list": "select id, data ->> 'name' as name_en, lat, lng from cities where country_id = (select id from countries where lower(name) = lower($1) or lower(slug) = lower($1))"
