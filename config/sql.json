@@ -1,0 +1,8 @@
+{
+  "city": {
+    "list": "select id, data ->> 'name' as name_en, lat, lng from cities where country_id = $1"
+  },
+  "countrycity": {
+    "list": "select id, data ->> 'name' as name_en, lat, lng from cities where country_id = (select id from countries where lower(name) = lower($1) or lower(slug) = lower($1))"
+  }
+}
