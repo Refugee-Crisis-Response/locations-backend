@@ -20,6 +20,8 @@ try {
 
 let server = restify.createServer();
 server.use(restify.bodyParser());
+//allow trailing slashes on requests
+server.pre(restify.pre.sanitizePath());
 
 let Pg = new Postgres(process.env.DB_CONNECT);
 let controllers = {
@@ -32,7 +34,7 @@ server.get('/', (req, res) => {
   });
 });
 
-server.get('/countries', controllers.countries.list);
+server.get('/countries/', controllers.countries.list);
 
 server.get('/countries/:country', controllers.countries.get);
 
