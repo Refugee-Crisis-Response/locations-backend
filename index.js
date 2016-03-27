@@ -23,6 +23,7 @@ try {
 
 let server = restify.createServer();
 server.use(restify.bodyParser());
+server.use(restify.queryParser());
 //allow trailing slashes on requests
 server.pre(restify.pre.sanitizePath());
 
@@ -43,6 +44,8 @@ server.get('/countries/', controllers.countries.list);
 server.get('/countries/:country', controllers.countries.get);
 
 server.get('/countries/:country/cities', controllers.cities.list);
+
+server.get('/cities/bounds', controllers.cities.bounds);
 
 server.listen(3000, () => {
   console.log('now listening at %s', server.url);
