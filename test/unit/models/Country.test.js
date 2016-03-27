@@ -1,5 +1,6 @@
 import test from 'tape';
 import sinon from 'sinon';
+import {country as sql} from '../../../config/sql.json';
 import Model from '../../../lib/models/Country';
 
 let mocks;
@@ -17,9 +18,6 @@ const mockMapper = () => {
 
 before('++++++++++++ Setting up Country model tests ++++++++++++', (assert) => {
   mocks = {};
-  mocks.listSQL = 'select id, name, slug from countries';
-  mocks.getSQLId = 'select id, name, slug from countries where id = $1';
-  mocks.getSQLText = 'select * from countries where lower(name) = lower($1) or lower(slug) = lower($1)';
   assert.end();
 });
 
@@ -31,7 +29,7 @@ test('*** List countries ***', (assert) => {
     let done = sinon.spy();
     country.list(done);
     let args = mocks.mapper.client.query.args;
-    assert.equal(args[0][0], mocks.listSQL);
+    assert.equal(args[0][0], sql.list);
     assert.equal(args[0][1], null);
     assert.equal(args[0][2], done);
     assert.end();
@@ -49,7 +47,7 @@ test('*** Get country ***', (assert) => {
     let id = '1234';
     country.get(id, done);
     let args = mocks.mapper.client.query.args;
-    assert.equal(args[0][0], mocks.getSQLId);
+    assert.equal(args[0][0], sql.get.byId);
     assert.deepEqual(args[0][1], [id]);
     assert.equal(args[0][2], done);
     assert.end();
@@ -62,7 +60,7 @@ test('*** Get country ***', (assert) => {
     let id = 'fakestring';
     country.get(id, done);
     let args = mocks.mapper.client.query.args;
-    assert.equal(args[0][0], mocks.getSQLText);
+    assert.equal(args[0][0], sql.get.byText);
     assert.deepEqual(args[0][1], [id]);
     assert.equal(args[0][2], done);
     assert.end();

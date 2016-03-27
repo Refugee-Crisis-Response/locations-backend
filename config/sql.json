@@ -4,5 +4,12 @@
   },
   "countrycity": {
     "list": "select id, data ->> 'name' as name_en, lat, lng from cities where country_id = (select id from countries where lower(name) = lower($1) or lower(slug) = lower($1))"
+  },
+  "country": {
+    "list": "select id, name, slug from countries",
+    "get": {
+      "byText": "select * from countries where lower(name) = lower($1) or lower(slug) = lower($1)",
+      "byId": "select id, name, slug from countries where id = $1"
+    }
   }
 }
