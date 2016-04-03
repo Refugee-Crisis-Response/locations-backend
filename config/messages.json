@@ -1,0 +1,14 @@
+{
+  "models": {
+    "city": {
+      "400": {
+        "status": 400,
+        "message": "Insufficient parameters to form a query."
+      },
+      "422": {
+        "status": 422,
+        "message": "Unprocessable data in request"
+      }
+    }
+  }
+}
