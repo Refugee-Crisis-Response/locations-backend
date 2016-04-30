@@ -14,6 +14,6 @@
     }
   },
   "geo": {
-    "list": "select id, data -> 'english', latitude, longitude from data_geo where data_geo.geo @ ST_MakeEnvelope ($1, $2, $3, $4)"
+    "bounds": "select id, data -> 'english' as content, latitude, longitude from data_geo where data_geo.geo @ ST_MakeEnvelope ($1, $2, $3, $4)"
   }
 }

@@ -4,9 +4,11 @@ import fs from 'fs';
 import Postgres from './lib/mappers/Postgres';
 import Country from './lib/models/Country';
 import City from './lib/models/City';
+import GeoModel from './lib/models/Geo';
 import CountryCity from './lib/models/Country-City';
 import Countries from './lib/controllers/Countries';
 import Cities from './lib/controllers/Cities';
+import GeoController from './lib/controllers/Geo';
 
 //load environment vars if .env file is there
 try {
@@ -30,7 +32,8 @@ server.pre(restify.pre.sanitizePath());
 let Pg = new Postgres(process.env.DB_CONNECT);
 let controllers = {
   countries: new Countries(new Country(Pg)),
-  cities: new Cities(new City(Pg), new CountryCity(Pg))
+  cities: new Cities(new City(Pg), new CountryCity(Pg)),
+  geo: new GeoController(new GeoModel(Pg))
 };
 
 server.get('/', (req, res) => {
@@ -46,6 +49,8 @@ server.get('/countries/:country', controllers.countries.get);
 server.get('/countries/:country/cities', controllers.cities.list);
 
 server.get('/cities/bounds', controllers.cities.bounds);
+
+server.get('/geo/bounds', controllers.geo.bounds);
 
 server.listen(3000, () => {
   console.log('now listening at %s', server.url);
