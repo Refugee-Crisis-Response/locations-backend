@@ -1,6 +1,6 @@
 {
   "models": {
-    "city": {
+    "bounds": {
       "400": {
         "status": 400,
         "message": "Insufficient parameters to form a query."
