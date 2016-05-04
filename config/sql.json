@@ -12,5 +12,8 @@
       "byText": "select * from countries where lower(name) = lower($1) or lower(slug) = lower($1)",
       "byId": "select id, name, slug from countries where id = $1"
     }
+  },
+  "geo": {
+    "bounds": "select id, data -> 'english' as content, latitude, longitude from data_geo where data_geo.geo @ ST_MakeEnvelope ($1, $2, $3, $4)"
   }
 }
